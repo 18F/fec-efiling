@@ -8,4 +8,8 @@ Are you interested in seeing how much money a candidate raised? Or spent? How mu
 
 The FEC gets information on campaign contributions and expenditures from reports filed by candidates, committees, parties, and PACs. Efiling is when they file these reports electronically using the FEC's free software, FECfile, or other commercial software.
 
-This goal of this project is to discover how people are using efiling and how they'd like to use it, in order to understand what changes the FEC might want to make. 
+This goal of this project is to discover how people are using efiling and how they'd like to use it, in order to understand what changes the FEC might want to make.
+
+## About this Repo
+
+This repo contains a static prototype for user testing data entry into a web-based efiling system.
