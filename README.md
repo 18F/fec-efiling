@@ -20,10 +20,6 @@ To serve this app locally, run:
 
 ```shell
 % npm install
-% cd node_modules/fec-style
-% npm install
-% npm run build-sass
-% npm run build-js
 % npm start
 ```
 
