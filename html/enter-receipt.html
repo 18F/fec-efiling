@@ -1,0 +1,189 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>FEC eFiling Prototype</title>
+  <meta name="description" content="A static prototype for testing efiling data entry.">
+  <meta name="author" content="18F">
+
+  <link rel="stylesheet" href="/node_modules/fec-style/css/styles.css">
+  <link rel="stylesheet" href="/css/styles.css">
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+  <script>
+    BASE_PATH = '/data';
+    CMS_URL = 'https://beta.fec.gov',
+    API_LOCATION = 'https://api.open.fec.gov/';
+    API_VERSION = 'v1';
+    API_KEY = '5yyI90SU3Xb73TVlv4wrEhQxYcCwMWCywQiGdYbJ'
+  </script>
+</head>
+
+<body>
+  <div class="slab slab--primary" style="padding:2rem;">
+    <ul class="breadcrumbs">
+  <li class="breadcrumbs__item"><a href="/index.html" class="breadcrumbs__link" rel="Home">Home</a></li>
+  <li class="breadcrumbs__item">
+    <span class="breadcrumbs__separator">›</span>
+    Existing Report
+  </li>
+</ul>
+
+  </div>
+    <header class="heading--section heading--with-action">
+      <div class="container">
+<h2 class="heading__left">Friends of Bo | Welcome Back!</h2>
+<h3 class="heading__right">
+  Due in: 3 days
+</h3>
+</div>
+
+    </header>
+  <div class="usa-grid container">
+    <div class="usa-width-one-half u-padding-left u-padding-right left-pane">
+      <h3>Enter Transaction | Contributions</h3>
+<div class="padded">
+<label class="label" for="amount">Amount</label>
+<input type="number" id="amount" step=".01" min="0">
+</div>
+
+<div class="padded">
+<label class="label" for="transaction-date">Transaction Date</label>
+<input type="date" id="transaction-date">
+</div>
+
+<div class="padded" style="border-top: 1px solid gray">
+<fieldset>
+     <legend class="label">Contact Type</legend>
+     <ul>
+       <li style="display:inline">
+         <input type="radio" id="individual" name="transaction-type" tab-index="0" checked>
+         <label for="individual">Individual</label>
+       </li>
+       <li style="display:inline">
+         <input type="radio" id="committee" name="transaction-type" tab-index="0">
+         <label for="committee">Committee</label>
+       </li>
+     </ul>
+</fieldset>
+</div>
+
+<div class="padded">
+<div class="filter js-filter typeahead-filter" data-filter="typeahead"
+ id="committee_id-field" data-name="committee_id" data-dataset="committees" data-allow-text>
+  <label class="label" for="committee_id">Contact Look-up</label>
+  <div class="combo combo--search--mini filter__typeahead">
+    <ul class="dropdown__selected"></ul>
+    <input id="committee_id" type="text" class="combo__input">
+    <button class="combo__button button--search button--standard" type="button">
+      <span class="u-visually-hidden">Search</span>
+    </button>
+  </div>
+</div>
+</div>
+
+<div class="padded">
+<label class="label" for="name">Name</label>
+<input type="text" id="name">
+</div>
+
+<div class="padded">
+<label class="label" for="address">Address</label>
+<input type="text" id="address">
+</div>
+
+<div class="padded">
+<label class="label" for="zip">Zip</label>
+<input type="text" id="zip">
+</div>
+
+<div class="padded">
+<label class="label" for="city">City</label>
+<input type="text" id="city">
+</div>
+
+<div class="padded">
+  <label class="label" for="state">State</label>
+  <select id="state" name="state">
+  	<option value="AL">Alabama</option>
+  	<option value="AK">Alaska</option>
+  	<option value="AZ">Arizona</option>
+  	<option value="AR">Arkansas</option>
+  	<option value="CA">California</option>
+  	<option value="CO">Colorado</option>
+  	<option value="CT">Connecticut</option>
+  	<option value="DE">Delaware</option>
+  	<option value="DC">District of Columbia</option>
+  	<option value="FL">Florida</option>
+  	<option value="GA">Georgia</option>
+  	<option value="HI">Hawaii</option>
+  	<option value="ID">Idaho</option>
+  	<option value="IL">Illinois</option>
+  	<option value="IN">Indiana</option>
+  	<option value="IA">Iowa</option>
+  	<option value="KS">Kansas</option>
+  	<option value="KY">Kentucky</option>
+  	<option value="LA">Louisiana</option>
+  	<option value="ME">Maine</option>
+  	<option value="MD">Maryland</option>
+  	<option value="MA">Massachusetts</option>
+  	<option value="MI">Michigan</option>
+  	<option value="MN">Minnesota</option>
+  	<option value="MS">Mississippi</option>
+  	<option value="MO">Missouri</option>
+  	<option value="MT">Montana</option>
+  	<option value="NE">Nebraska</option>
+  	<option value="NV">Nevada</option>
+  	<option value="NH">New Hampshire</option>
+  	<option value="NJ">New Jersey</option>
+  	<option value="NM">New Mexico</option>
+  	<option value="NY">New York</option>
+  	<option value="NC">North Carolina</option>
+  	<option value="ND">North Dakota</option>
+  	<option value="OH">Ohio</option>
+  	<option value="OK">Oklahoma</option>
+  	<option value="OR">Oregon</option>
+  	<option value="PA">Pennsylvania</option>
+  	<option value="RI">Rhode Island</option>
+  	<option value="SC">South Carolina</option>
+  	<option value="SD">South Dakota</option>
+  	<option value="TN">Tennessee</option>
+  	<option value="TX">Texas</option>
+  	<option value="UT">Utah</option>
+  	<option value="VT">Vermont</option>
+  	<option value="VA">Virginia</option>
+  	<option value="WA">Washington</option>
+  	<option value="WV">West Virginia</option>
+  	<option value="WI">Wisconsin</option>
+  	<option value="WY">Wyoming</option>
+  </select>
+</div>
+
+<div class="padded">
+<label class="label" for="employer">Employer</label>
+<input type="text" id="employer">
+</div>
+
+<div class="padded">
+<label class="label" for="occupation">Occupation</label>
+<input type="text" id="occupation">
+</div>
+
+<div class="padded t-centered">
+  <p><button class="button--cta">Save and add another</button></p>
+  <p><button class="button--standard">Save and finish</button><p>
+  <p><a href="#">cancel</a></p>
+</div>
+
+    </div>
+    <div class="usa-width-one-half">
+      
+    </div>
+  </div>
+<script src="/node_modules/fec-style/fec-template/public/main.js"></script>
+</body>
+</html>
