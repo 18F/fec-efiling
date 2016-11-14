@@ -14,6 +14,7 @@ function compile() {
   var reportHeader = read('templates/report-header.tmpl.html')
   var chooseTransactionType = read('templates/transaction-type.tmpl.html')
   var breadCrumbsExistingReport = read('templates/breadcrumbs-existing-report.tmpl.html')
+  var chooseEntryType = read('templates/entry-type.tmpl.html')
 
   var index = read('templates/master.tmpl.html', {breadcrumbs: breadcrumbsHome,
                                                     leftPane: landing,
@@ -30,12 +31,19 @@ function compile() {
                                                             rightPane: "",
                                                             header: reportHeader});
 
+  var selectEntryType = read('templates/master.tmpl.html', {breadcrumbs: breadCrumbsExistingReport,
+                                                            leftPane: chooseEntryType,
+                                                            rightPane: "",
+                                                            header: reportHeader});
+
   fs.writeFileSync('index.html', index);
   console.log('written: index.html');
   fs.writeFileSync('html/select-existing-report.html', selectExistingReport);
   console.log('written: html/select-existing-report.html')
   fs.writeFileSync('html/select-transaction-type.html', selectTransactionType);
   console.log('written: html/select-transaction-type.html')
+  fs.writeFileSync('html/select-entry-type.html', selectEntryType);
+  console.log('written: html/select-entry-type.html')
 
 }
 
