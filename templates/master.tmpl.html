@@ -4,11 +4,12 @@
 <head>
   <meta charset="utf-8">
 
-  <title>FEC Efiling Prototype</title>
-  <meta name="description" content="A static prototpye for testing efiling data entry.">
+  <title>FEC eFiling Prototype</title>
+  <meta name="description" content="A static prototype for testing efiling data entry.">
   <meta name="author" content="18F">
 
-  <link rel="stylesheet" href="node_modules/fec-style/css/styles.css">
+  <link rel="stylesheet" href="/node_modules/fec-style/css/styles.css">
+  <link rel="stylesheet" href="/css/styles.css">
 
   <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
@@ -24,34 +25,19 @@
 
 <body>
   <div class="slab slab--primary">
+    ${tmpl.breadcrumbs}
   </div>
     <header class="heading--section heading--with-action">
-      <div class="container">
-      <h2 class="heading__left">Friends of Bo | Welcome Back!</h2>
-      <h3 class="heading__right">
-        Nov Monthly Report | 11/27/2016
-      </h3>
-      </div>
-     </header>
+      ${tmpl.header}
+    </header>
   <div class="usa-grid container">
-  <div class="usa-width-one-third u-padding-left u-padding-right">
-  <div class="filter js-filter typeahead-filter" data-filter="typeahead"
-   id="committee_id-field" data-name="committee_id" data-dataset="committees" data-allow-text>
-    <label class="label" for="committee_id">Contact Look-up</label>
-    <div class="combo combo--search--mini filter__typeahead">
-      <ul class="dropdown__selected"></ul>
-      <input id="committee_id" type="text" class="combo__input">
-      <button class="combo__button button--search button--standard" type="button">
-        <span class="u-visually-hidden">Search</span>
-      </button>
+    <div class="usa-width-one-third u-padding-left u-padding-right left-pane">
+      ${tmpl.leftPane}
+    </div>
+    <div class="usa-width-two-thirds">
+      ${tmpl.rightPane}
     </div>
   </div>
-
-</div>
-<div class="usa-width-two-thirds">
-Content here.
-</div>
-</div>
 <script src="node_modules/fec-style/fec-template/public/main.js"></script>
 </body>
 </html>

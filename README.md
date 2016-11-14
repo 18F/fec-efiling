@@ -15,8 +15,9 @@ This goal of this project is to discover how people are using efiling and how th
 This repo contains a static prototype for user testing data entry into a web-based efiling system.
 
 ## Running locally
+To view the app, just clone the repo and double click on index.html.
 
-To serve this app locally, run:
+To build this app locally, run:
 
 ```shell
 % npm install
