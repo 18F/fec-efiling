@@ -24,14 +24,17 @@
 </head>
 
 <body>
-  <div class="slab slab--primary">
-    
+  <div class="slab slab--primary" style="padding:2rem;">
+    <ul class="breadcrumbs">
+  <li class="breadcrumbs__item"><a href="/index.html" class="breadcrumbs__link" rel="Home">Home</a></li>
+</ul>
+
   </div>
     <header class="heading--section heading--with-action">
       <div class="container">
 <h2 class="heading__left">Friends of Bo | Welcome Back!</h2>
 <h3 class="heading__right">
-  Nov Monthly Report | 11/27/2016
+  Nov Monthly Report | <span class="t-note">Next reporting deadline:&nbsp&nbsp</span>11/27/2016
 </h3>
 </div>
 
@@ -59,7 +62,7 @@
       <div id="existing-report-card" class="card card--horizontal card--full-bleed">
         <img alt="" src="/node_modules/fec-style/img/i-filings--primary.svg" class="icon--complex card__image">
         <div class="card__content">
-          <a href="/html/existing-report.html">Work on an existing report >></a>
+          <a href="/html/select-existing-report.html">Work on an existing report >></a>
         </div>
       </div>
     </div>
@@ -95,12 +98,17 @@
 
     </div>
     <div class="usa-width-two-thirds">
-      existing report
-
-<script>
+      <script>
   var el = document.querySelector('#existing-report-card')
   el.className += ' card--neutral';
 </script>
+
+<h6>Reports in Progress:</h5>
+<div class="card card--horizontal card--neutral">
+
+<p><a href="#">2016 Pre-General (Last Edited 10/01/2016)</a></p>
+<p><a href="#">2016 October Monthly (Last Edited 10/14/2016)</a></p>
+</div>
 
     </div>
   </div>
