@@ -1,3 +1,47 @@
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+	$("#contributor_id").on("input", function(e) {
+			var val = $(this).val();
+			if(val.length < 3) return;
+      var entity_type;
+      if($('#individual').prop('checked')) {
+        entity_type = 'IND'
+      } else {
+        entity_type = 'ORG'
+      }
+			$.getJSON('https://api.open.fec.gov/v1/schedules/schedule_a/?api_key=' +
+          API_KEY + '&contributor_name=' + val + '&entity_type=' + entity_type,
+        function(res) {
+          matches = res.results.filter(function(result) {
+              return result.contributor_name === val;
+          })
+          if(matches.length > 0) {
+            $('#manual-entry').hide();
+            $('#result-name').text(matches[0].contributor_name);
+            $('#result-city').text(matches[0].contributor_city);
+            $('#result-state').text(matches[0].contributor_state);
+            $('#result-zip').text(matches[0].contributor_zip);
+            $('#contributor_id').css('background-color', 'lightgreen')
+            $('#result-found').show();
+          } else {
+            $('#contributor_id').css('background-color', '')
+            $('#manual-entry').show();
+            $('#result-found').hide();
+          }
+  				var dataList = $("#contributors");
+  				dataList.empty();
+  				if(res.results.length) {
+  					for(var i=0; i <res.results.length; i++) {
+  						var opt = $("<option></option>").attr("value", res.results[i].contributor_name);
+  						dataList.append(opt);
+  					}
+  				}
+			});
+		});
+	});
+</script>
+
 <h3>Enter Transaction | Contributions</h3>
 <div class="padded">
 <label class="label" for="amount">Amount</label>
@@ -24,20 +68,39 @@
      </ul>
 </fieldset>
 </div>
-
+<!--
 <div class="padded">
 <div class="filter js-filter typeahead-filter" data-filter="typeahead"
- id="committee_id-field" data-name="committee_id" data-dataset="committees" data-allow-text>
-  <label class="label" for="committee_id">Contact Look-up</label>
+ id="contributor_id-field" data-name="contributor_id" data-dataset="contributors" data-allow-text>
+  <label class="label" for="contributor_id">Contact Look-up</label>
   <div class="combo combo--search--mini filter__typeahead">
     <ul class="dropdown__selected"></ul>
-    <input id="committee_id" type="text" class="combo__input">
+    <input id="contributor_id" type="text" class="combo__input">
     <button class="combo__button button--search button--standard" type="button">
       <span class="u-visually-hidden">Search</span>
     </button>
   </div>
 </div>
 </div>
+!-->
+<div class="padded">
+<label class="label" for="contributor_id">Contact Look-up</label>
+<input id="contributor_id" type="text" class="combo__input" list="contributors">
+<datalist id="contributors">
+  <option>none of these, add new</option>
+  <option>tony</option>
+  <option>carol</option>
+</datalist>
+</div>
+
+<div id="result-found" class="message message--success" style="display:none">
+<p id="result-name"><p>
+<p>
+  <span id="result-city"></span>, <span id="result-state"></span>, <span id="result-zip"></span>
+</p>
+</div>
+
+<div id="manual-entry">
 
 <div class="padded">
 <label class="label" for="name">Name</label>
@@ -124,6 +187,8 @@
 <div class="padded">
 <label class="label" for="occupation">Occupation</label>
 <input type="text" id="occupation">
+</div>
+
 </div>
 
 <div class="padded t-centered">
