@@ -16,6 +16,8 @@ function compile() {
   var breadCrumbsExistingReport = read('templates/breadcrumbs-existing-report.tmpl.html')
   var chooseEntryType = read('templates/entry-type.tmpl.html')
   var enterReceipt = read('templates/enter-receipt.tmpl.html')
+  var readyToSubmitPane = read('templates/ready-to-submit.tmpl.html')
+  var table = read('templates/table.tmpl.html')
 
   var index = read('templates/master.tmpl.html', {breadcrumbs: breadcrumbsHome,
                                                     leftPane: landing,
@@ -39,26 +41,33 @@ function compile() {
 
   var enterReceipt = read('templates/master.tmpl.html', {breadcrumbs: breadCrumbsExistingReport,
                                                             leftPane: enterReceipt,
-                                                            rightPane: "",
+                                                            rightPane: table,
                                                             header: reportHeader});
+
+  var readyToSubmit = read('templates/master.tmpl.html', {breadcrumbs: breadCrumbsExistingReport,
+                                                            leftPane: readyToSubmitPane,
+                                                            rightPane: table,
+                                                            header: reportHeader});
+
+
 
   fs.writeFileSync('index.html', index);
   console.log('written: index.html');
 
   fs.writeFileSync('html/select-existing-report.html', selectExistingReport);
-  console.log('written: html/select-existing-report.html')
+  console.log('written: html/select-existing-report.html');
 
   fs.writeFileSync('html/select-transaction-type.html', selectTransactionType);
-  console.log('written: html/select-transaction-type.html')
+  console.log('written: html/select-transaction-type.html');
 
   fs.writeFileSync('html/select-entry-type.html', selectEntryType);
-  console.log('written: html/select-entry-type.html')
+  console.log('written: html/select-entry-type.html');
 
   fs.writeFileSync('html/enter-receipt.html', enterReceipt);
-  console.log('written: html/enter-receipt.html')
+  console.log('written: html/enter-receipt.html');
 
-
-
+  fs.writeFileSync('html/ready-to-submit.html', readyToSubmit);
+  console.log('written: html/ready-to-submit.html');
 }
 
 fs.watch('templates', {recursive: true}, compile)

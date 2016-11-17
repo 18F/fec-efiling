@@ -1,0 +1,29 @@
+<table class="simple-table simple-table--display">
+  <thead class="simple-table__header">
+    <tr>
+      <th class="simple-table__header-cell">Name</th>
+      <th class="simple-table__header-cell">Type</th>
+      <th class="simple-table__header-cell">Amount</th>
+  </tr>
+  </thead>
+  <tbody id="table-data-container">
+  </tbody>
+</table>
+
+<script>
+    function makeTable() {
+        var reportData = JSON.parse(localStorage.getItem('reportData'));
+        html = ''
+        reportData.forEach(function(entry) {
+          html += '<tr class="simple-table__row"> \
+                      <td class="simple-table__cell">' + entry.name + '</td> \
+                      <td class="simple-table__cell">' + entry.entityType + '</td> \
+                      <td class="simple-table__cell"> $' + entry.amount + '</td> \
+                    </tr>'
+        })
+
+        document.getElementById("table-data-container").innerHTML = html;
+    };
+
+    makeTable();
+</script>

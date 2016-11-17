@@ -1,0 +1,92 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>FEC eFiling Prototype</title>
+  <meta name="description" content="A static prototype for testing efiling data entry.">
+  <meta name="author" content="18F">
+
+  <link rel="stylesheet" href="/node_modules/fec-style/css/styles.css">
+  <link rel="stylesheet" href="/css/styles.css">
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+  <script>
+    BASE_PATH = '/data';
+    CMS_URL = 'https://beta.fec.gov',
+    API_LOCATION = 'https://api.open.fec.gov/';
+    API_VERSION = 'v1';
+    API_KEY = '5yyI90SU3Xb73TVlv4wrEhQxYcCwMWCywQiGdYbJ'
+  </script>
+</head>
+
+<body>
+  <div class="slab slab--primary" style="padding:2rem;">
+    <ul class="breadcrumbs">
+  <li class="breadcrumbs__item"><a href="/index.html" class="breadcrumbs__link" rel="Home">Home</a></li>
+  <li class="breadcrumbs__item">
+    <span class="breadcrumbs__separator">›</span>
+    Existing Report
+  </li>
+</ul>
+
+  </div>
+    <header class="heading--section heading--with-action">
+      <div class="container">
+<h2 class="heading__left">Friends of Bo | Welcome Back!</h2>
+<h3 class="heading__right">
+  Due in: 3 days
+</h3>
+</div>
+
+    </header>
+  <div class="usa-grid container">
+    <div class="usa-width-one-half u-padding-left u-padding-right left-pane">
+      <h2>Report: November Monthly</h2>
+<h3>Ready to submit? Let's check some things first:</h3>
+<ul class="list--numbered">
+  <li>Check for duplicates</li>
+  <li>Run validation</li>
+  <li>Preview, Sign and Submit</li>
+</ul>
+
+<div class="t-centered">
+  <a href="#" class="button--cta" style="width:80%" onclick="alert('Congrats! You've completed the demo.');">go</a>
+</div>
+
+    </div>
+    <div class="usa-width-one-half">
+      <table class="simple-table simple-table--display">
+  <thead class="simple-table__header">
+    <tr>
+      <th class="simple-table__header-cell">Name</th>
+      <th class="simple-table__header-cell">Type</th>
+      <th class="simple-table__header-cell">Amount</th>
+  </tr>
+  </thead>
+  <tbody id="table-data-container">
+  </tbody>
+</table>
+
+<script>
+    function makeTable() {
+        var reportData = JSON.parse(localStorage.getItem('reportData'));
+        html = ''
+        reportData.forEach(function(entry) {
+          html += '<tr class="simple-table__row">                       <td class="simple-table__cell">' + entry.name + '</td>                       <td class="simple-table__cell">' + entry.entityType + '</td>                       <td class="simple-table__cell"> $' + entry.amount + '</td>                     </tr>'
+        })
+
+        document.getElementById("table-data-container").innerHTML = html;
+    };
+
+    makeTable();
+</script>
+
+    </div>
+  </div>
+<script src="/node_modules/fec-style/fec-template/public/main.js"></script>
+</body>
+</html>

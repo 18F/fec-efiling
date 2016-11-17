@@ -48,15 +48,17 @@
       <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script>
 $(document).ready(function() {
-  var entity_type;
+  var entity_type = 'IND'
+
+  $('#individual').click(function() {
+    entity_type = 'IND'
+  })
+  $('#committee').click(function() {
+    entity_type = 'ORG'
+  })
 	$("#contributor_id").on("input", function(e) {
 			var val = $(this).val();
 			if(val.length < 3) return;
-      if($('#individual').prop('checked')) {
-        entity_type = 'IND'
-      } else {
-        entity_type = 'ORG'
-      }
 			$.getJSON('https://api.open.fec.gov/v1/schedules/schedule_a/?api_key=' +
           API_KEY + '&contributor_name=' + val + '&entity_type=' + entity_type,
         function(res) {
@@ -89,30 +91,35 @@ $(document).ready(function() {
 			});
 		});
 
+    function saveTransaction() {
+      var reportData = JSON.parse(localStorage.getItem('reportData'));
+      var entry = {'name': $('#result-name').text() || $('#name').val(),
+                    'city': $('#result-city').text() || $('#city').val(),
+                    'state': $('#result-state').text() || $('#zip').val(),
+                    'amount': $('#amount').val(),
+                    'date': $('#transaction-date').val(),
+                    'occupation': $('#result-occupation').text() || $('#occupation').val(),
+                    'employer': $('#result-employer').text() || $('#employer').val(),
+                    'type': 'receipt',
+                    'entityType': entity_type}
+      if(reportData) {
+          reportData.push(entry)
+      } else {
+          reportData = [entry]
+      }
+
+      localStorage.setItem('reportData', JSON.stringify(reportData));
+    }
+
     $('#add-another').click(function() {
-        var reportData = JSON.parse(localStorage.getItem('reportData'));
-        var entry = {'name': $('#result-name').text() || $('#name').val(),
-                      'city': $('#result-city').text() || $('#city').val(),
-                      'state': $('#result-state').text() || $('#zip').val(),
-                      'amount': $('#amount').val(),
-                      'date': $('#transaction-date').val(),
-                      'occupation': $('#result-occupation').text() || $('#occupation').val(),
-                      'employer': $('#result-employer').text() || $('#employer').val(),
-                      'type': 'receipt',
-                      'entity-type': entity_type}
-        if(reportData) {
-            reportData.push(entry)
-        } else {
-            reportData = [entry]
-        }
-
-        localStorage.setItem('reportData', JSON.stringify(reportData));
-
-        $('#manual-entry').show();
-        $('#result-found').hide();
-        $("#contributor_id").val('');
-        $('#contributor_id').css('background-color', '')
+        saveTransaction();
+        location.reload();
     });
+
+    $('#save-and-finish').click(function() {
+      saveTransaction();
+      window.location.href = '/html/ready-to-submit.html';
+    })
 	});
 </script>
 
@@ -252,14 +259,39 @@ $(document).ready(function() {
 </div>
 
 <div class="padded t-centered">
-  <p><button id="add-another" class="button--cta">Save and add another</button></p>
-  <p><button class="button--standard">Save and finish</button><p>
-  <p><a href="#">cancel</a></p>
+  <p><button id="add-another" class="button--cta" style="width:80%">Save and add another</button></p>
+  <p><button id="save-and-finish" class="button--standard" style="width:80%">Save and finish</button><p>
+  <p><a href="/index.html">cancel</a></p>
 </div>
 
     </div>
     <div class="usa-width-one-half">
-      
+      <table class="simple-table simple-table--display">
+  <thead class="simple-table__header">
+    <tr>
+      <th class="simple-table__header-cell">Name</th>
+      <th class="simple-table__header-cell">Type</th>
+      <th class="simple-table__header-cell">Amount</th>
+  </tr>
+  </thead>
+  <tbody id="table-data-container">
+  </tbody>
+</table>
+
+<script>
+    function makeTable() {
+        var reportData = JSON.parse(localStorage.getItem('reportData'));
+        html = ''
+        reportData.forEach(function(entry) {
+          html += '<tr class="simple-table__row">                       <td class="simple-table__cell">' + entry.name + '</td>                       <td class="simple-table__cell">' + entry.entityType + '</td>                       <td class="simple-table__cell"> $' + entry.amount + '</td>                     </tr>'
+        })
+
+        document.getElementById("table-data-container").innerHTML = html;
+    };
+
+    makeTable();
+</script>
+
     </div>
   </div>
 <script src="/node_modules/fec-style/fec-template/public/main.js"></script>
