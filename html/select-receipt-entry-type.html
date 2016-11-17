@@ -51,46 +51,47 @@
     </header>
   <div class="usa-grid container">
     <div class="usa-width-one-half u-padding-left u-padding-right left-pane">
-      <h2>Report: November Monthly</h2>
-<h3>Ready to submit? Let's check some things first:</h3>
-<ul class="list--numbered">
-  <li>Check for duplicates</li>
-  <li>Run validation</li>
-  <li>Preview, Sign and Submit</li>
-</ul>
+      <h3>Report: October Monthly</h3>
+<p style="color: gray">Tell us how you'd like to get started (2 of 2):</p>
+<p class="t-centered">How would you like to enter your data?</p>
 
-<div class="t-centered">
-  <a href="#" class="button--cta" style="width:80%" onclick="alert('Congrats! You've completed the demo.');">go</a>
+<div class="grid">
+<div class="grid__item">
+<div class="container">
+    <div class="card__image__container">
+      <div class="card card--horizontal card--full-bleed card--primary padded">
+        <img alt="" src="/node_modules/fec-style/img/i-register--neutral.svg" class="icon--complex card__image">
+        <div class="card__content">
+          <h3><a href="/html/enter-receipt.html">Manual data entry >></a></h3>
+          <p>Input transaction data one transaction at a time</p>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+
+<div class="grid">
+<div class="grid__item">
+<div class="container">
+    <div class="card__image__container">
+      <div class="card card--horizontal card--full-bleed card--secondary-contrast padded">
+        <img alt="" src="/node_modules/fec-style/fec-icons/icons/arrow-up-border.svg" class="icon--complex card__image">
+        <div class="card__content">
+          <h3><a href="#">Import data >></a></h3>
+          <p>Upload an excel or CSV file from your computer</p>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+
+<div class="padded t-centered">
+  <p><button class="button--cta">Begin Submission Process</button></p>
 </div>
 
     </div>
     <div class="usa-width-one-half">
-      <table class="simple-table simple-table--display">
-  <thead class="simple-table__header">
-    <tr>
-      <th class="simple-table__header-cell">Name</th>
-      <th class="simple-table__header-cell">Type</th>
-      <th class="simple-table__header-cell">Amount</th>
-  </tr>
-  </thead>
-  <tbody id="table-data-container">
-  </tbody>
-</table>
-
-<script>
-    function makeTable() {
-        var reportData = JSON.parse(localStorage.getItem('reportData'));
-        html = ''
-        reportData.forEach(function(entry) {
-          html += '<tr class="simple-table__row">                       <td class="simple-table__cell">' + entry.name + '</td>                       <td class="simple-table__cell">' + entry.entityType + '</td>                       <td class="simple-table__cell"> $' + entry.amount + '</td>                     </tr>'
-        })
-
-        document.getElementById("table-data-container").innerHTML = html;
-    };
-
-    makeTable();
-</script>
-
+      
     </div>
   </div>
 <script src="/node_modules/fec-style/fec-template/public/main.js"></script>

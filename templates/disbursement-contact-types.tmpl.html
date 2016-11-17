@@ -1,0 +1,32 @@
+<div class="padded" style="border-top: 1px solid gray">
+<fieldset>
+     <legend class="label">Contact Type</legend>
+     <ul>
+       <li style="display:inline">
+         <input type="radio" id="individual" name="transaction-type" tab-index="0" checked>
+         <label for="individual">Individual</label>
+       </li>
+       <li style="display:inline">
+         <input type="radio" id="committee" name="transaction-type" tab-index="0">
+         <label for="committee">Committee</label>
+       </li>
+       <li style="display:inline">
+         <input type="radio" id="vendor" name="transaction-type" tab-index="0">
+         <label for="committee">Vendor</label>
+       </li>
+
+     </ul>
+</fieldset>
+</div>
+<script>
+  var entity_type = 'IND'
+  document.getElementById('individual').addEventListener('click', function() {
+    entity_type = 'IND'
+  })
+  document.getElementById('committee').addEventListener('click', function() {
+    entity_type = 'ORG'
+  })
+  document.getElementById('vendor').addEventListener('click', function() {
+    entity_type = 'VEN'
+  })
+</script>

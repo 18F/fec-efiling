@@ -14,8 +14,14 @@ function compile() {
   var reportHeader = read('templates/report-header.tmpl.html')
   var chooseTransactionType = read('templates/transaction-type.tmpl.html')
   var breadCrumbsExistingReport = read('templates/breadcrumbs-existing-report.tmpl.html')
-  var chooseEntryType = read('templates/entry-type.tmpl.html')
-  var enterReceipt = read('templates/enter-receipt.tmpl.html')
+  var chooseReceiptEntryType = read('templates/entry-type.tmpl.html', {manualEntryLink: '/html/enter-receipt.html'})
+  var chooseDisbursementEntryType = read('templates/entry-type.tmpl.html', {manualEntryLink: '/html/enter-disbursement.html'})
+  var receiptContacts = read('templates/receipt-contact-types.tmpl.html')
+  var disbursementContacts = read('templates/disbursement-contact-types.tmpl.html')
+  var enterReceipt = read('templates/enter-transaction.tmpl.html', {contactTypes: receiptContacts,
+                                                                            transactionType: "Contributions"})
+  var enterDisbursement = read('templates/enter-transaction.tmpl.html', {contactTypes: disbursementContacts,
+                                                                            transactionType: "Disbursements"})
   var readyToSubmitPane = read('templates/ready-to-submit.tmpl.html')
   var table = read('templates/table.tmpl.html')
 
@@ -34,8 +40,13 @@ function compile() {
                                                             rightPane: "",
                                                             header: reportHeader});
 
-  var selectEntryType = read('templates/master.tmpl.html', {breadcrumbs: breadCrumbsExistingReport,
-                                                            leftPane: chooseEntryType,
+  var selectReceiptEntryType = read('templates/master.tmpl.html', {breadcrumbs: breadCrumbsExistingReport,
+                                                            leftPane: chooseReceiptEntryType,
+                                                            rightPane: "",
+                                                            header: reportHeader});
+
+  var selectDisbursementEntryType = read('templates/master.tmpl.html', {breadcrumbs: breadCrumbsExistingReport,
+                                                            leftPane: chooseDisbursementEntryType,
                                                             rightPane: "",
                                                             header: reportHeader});
 
@@ -44,10 +55,16 @@ function compile() {
                                                             rightPane: table,
                                                             header: reportHeader});
 
+  var enterDisbursement = read('templates/master.tmpl.html', {breadcrumbs: breadCrumbsExistingReport,
+                                                            leftPane: enterDisbursement,
+                                                            rightPane: table,
+                                                            header: reportHeader});
+
   var readyToSubmit = read('templates/master.tmpl.html', {breadcrumbs: breadCrumbsExistingReport,
                                                             leftPane: readyToSubmitPane,
                                                             rightPane: table,
                                                             header: reportHeader});
+
 
 
 
@@ -60,11 +77,17 @@ function compile() {
   fs.writeFileSync('html/select-transaction-type.html', selectTransactionType);
   console.log('written: html/select-transaction-type.html');
 
-  fs.writeFileSync('html/select-entry-type.html', selectEntryType);
-  console.log('written: html/select-entry-type.html');
+  fs.writeFileSync('html/select-receipt-entry-type.html', selectReceiptEntryType);
+  console.log('written: html/select-receipt-entry-type.html');
+
+  fs.writeFileSync('html/select-disbursement-entry-type.html', selectDisbursementEntryType);
+  console.log('written: html/select-disbursement-entry-type.html');
 
   fs.writeFileSync('html/enter-receipt.html', enterReceipt);
   console.log('written: html/enter-receipt.html');
+
+  fs.writeFileSync('html/enter-disbursement.html', enterDisbursement);
+  console.log('written: html/enter-disbursement.html');
 
   fs.writeFileSync('html/ready-to-submit.html', readyToSubmit);
   console.log('written: html/ready-to-submit.html');

@@ -1,82 +1,10 @@
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script>
 $(document).ready(function() {
-  var entity_type = 'IND'
 
-  $('#individual').click(function() {
-    entity_type = 'IND'
-  })
-  $('#committee').click(function() {
-    entity_type = 'ORG'
-  })
-	$("#contributor_id").on("input", function(e) {
-			var val = $(this).val();
-			if(val.length < 3) return;
-			$.getJSON('https://api.open.fec.gov/v1/schedules/schedule_a/?api_key=' +
-          API_KEY + '&contributor_name=' + val + '&entity_type=' + entity_type,
-        function(res) {
-          matches = res.results.filter(function(result) {
-              return result.contributor_name === val;
-          })
-          if(matches.length > 0) {
-            $('#manual-entry').hide();
-            $('#result-name').text(matches[0].contributor_name);
-            $('#result-city').text(matches[0].contributor_city);
-            $('#result-state').text(matches[0].contributor_state);
-            $('#result-zip').text(matches[0].contributor_zip);
-            $('#result-occupation').text(matches[0].contributor_occupation);
-            $('#result-employer').text(matches[0].contributor_employer);
-            $('#contributor_id').css('background-color', 'lightgreen')
-            $('#result-found').show();
-          } else {
-            $('#contributor_id').css('background-color', '')
-            $('#manual-entry').show();
-            $('#result-found').hide();
-          }
-  				var dataList = $("#contributors");
-  				dataList.empty();
-  				if(res.results.length) {
-  					for(var i=0; i <res.results.length; i++) {
-  						var opt = $("<option></option>").attr("value", res.results[i].contributor_name);
-  						dataList.append(opt);
-  					}
-  				}
-			});
-		});
-
-    function saveTransaction() {
-      var reportData = JSON.parse(localStorage.getItem('reportData'));
-      var entry = {'name': $('#result-name').text() || $('#name').val(),
-                    'city': $('#result-city').text() || $('#city').val(),
-                    'state': $('#result-state').text() || $('#zip').val(),
-                    'amount': $('#amount').val(),
-                    'date': $('#transaction-date').val(),
-                    'occupation': $('#result-occupation').text() || $('#occupation').val(),
-                    'employer': $('#result-employer').text() || $('#employer').val(),
-                    'type': 'receipt',
-                    'entityType': entity_type}
-      if(reportData) {
-          reportData.push(entry)
-      } else {
-          reportData = [entry]
-      }
-
-      localStorage.setItem('reportData', JSON.stringify(reportData));
-    }
-
-    $('#add-another').click(function() {
-        saveTransaction();
-        location.reload();
-    });
-
-    $('#save-and-finish').click(function() {
-      saveTransaction();
-      window.location.href = '/html/ready-to-submit.html';
-    })
 	});
 </script>
 
-<h3>Enter Transaction | Contributions</h3>
+<h3>Enter Transaction | ${tmpl.transactionType}</h3>
 <div class="padded">
 <label class="label" for="amount">Amount</label>
 <input type="number" id="amount" step=".01" min="0">
@@ -87,21 +15,7 @@ $(document).ready(function() {
 <input type="date" id="transaction-date">
 </div>
 
-<div class="padded" style="border-top: 1px solid gray">
-<fieldset>
-     <legend class="label">Contact Type</legend>
-     <ul>
-       <li style="display:inline">
-         <input type="radio" id="individual" name="transaction-type" tab-index="0" checked>
-         <label for="individual">Individual</label>
-       </li>
-       <li style="display:inline">
-         <input type="radio" id="committee" name="transaction-type" tab-index="0">
-         <label for="committee">Committee</label>
-       </li>
-     </ul>
-</fieldset>
-</div>
+${tmpl.contactTypes}
 
 <div class="padded">
 <label class="label" for="contributor_id">Contact Look-up</label>
@@ -110,7 +24,6 @@ $(document).ready(function() {
   <option>none of these, add new</option>
 </datalist>
 </div>
-
 <div id="result-found" class="message message--success" style="display:none">
 <p id="result-name"><p>
 <p>
@@ -119,9 +32,45 @@ $(document).ready(function() {
 <p id="result-occupation"></p>
 <p id="result-employer"></p>
 </div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script>
+$("#contributor_id").on("input", function(e) {
+    var val = $(this).val();
+    if(val.length < 3) return;
+    $.getJSON('https://api.open.fec.gov/v1/schedules/schedule_a/?api_key=' +
+        API_KEY + '&contributor_name=' + val + '&entity_type=' + entity_type,
+      function(res) {
+        matches = res.results.filter(function(result) {
+            return result.contributor_name === val;
+        })
+        if(matches.length > 0) {
+          $('#manual-entry').hide();
+          $('#result-name').text(matches[0].contributor_name);
+          $('#result-city').text(matches[0].contributor_city);
+          $('#result-state').text(matches[0].contributor_state);
+          $('#result-zip').text(matches[0].contributor_zip);
+          $('#result-occupation').text(matches[0].contributor_occupation);
+          $('#result-employer').text(matches[0].contributor_employer);
+          $('#contributor_id').css('background-color', 'lightgreen')
+          $('#result-found').show();
+        } else {
+          $('#contributor_id').css('background-color', '')
+          $('#manual-entry').show();
+          $('#result-found').hide();
+        }
+        var dataList = $("#contributors");
+        dataList.empty();
+        if(res.results.length) {
+          for(var i=0; i <res.results.length; i++) {
+            var opt = $("<option></option>").attr("value", res.results[i].contributor_name);
+            dataList.append(opt);
+          }
+        }
+    });
+  });
+</script>
 
 <div id="manual-entry">
-
 <div class="padded">
 <label class="label" for="name">Name</label>
 <input type="text" id="name">
@@ -211,8 +160,40 @@ $(document).ready(function() {
 
 </div>
 
+<!-- buttons !-->
 <div class="padded t-centered">
   <p><button id="add-another" class="button--cta" style="width:80%">Save and add another</button></p>
   <p><button id="save-and-finish" class="button--standard" style="width:80%">Save and finish</button><p>
   <p><a href="/index.html">cancel</a></p>
 </div>
+<script>
+  function saveTransaction() {
+    var reportData = JSON.parse(localStorage.getItem('reportData'));
+    var entry = {'name': $('#result-name').text() || $('#name').val(),
+                  'city': $('#result-city').text() || $('#city').val(),
+                  'state': $('#result-state').text() || $('#zip').val(),
+                  'amount': $('#amount').val(),
+                  'date': $('#transaction-date').val(),
+                  'occupation': $('#result-occupation').text() || $('#occupation').val(),
+                  'employer': $('#result-employer').text() || $('#employer').val(),
+                  'type': 'receipt',
+                  'entityType': entity_type}
+    if(reportData) {
+        reportData.push(entry)
+    } else {
+        reportData = [entry]
+    }
+
+    localStorage.setItem('reportData', JSON.stringify(reportData));
+  }
+
+  document.getElementById('add-another').addEventListener('click', function() {
+      saveTransaction();
+      location.reload();
+  });
+
+  document.getElementById('save-and-finish').addEventListener('click', function() {
+    saveTransaction();
+    window.location.href = '/html/ready-to-submit.html';
+  })
+</script>

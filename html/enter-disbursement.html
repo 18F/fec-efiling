@@ -57,7 +57,7 @@ $(document).ready(function() {
 	});
 </script>
 
-<h3>Enter Transaction | Contributions</h3>
+<h3>Enter Transaction | Disbursements</h3>
 <div class="padded">
 <label class="label" for="amount">Amount</label>
 <input type="number" id="amount" step=".01" min="0">
@@ -80,6 +80,11 @@ $(document).ready(function() {
          <input type="radio" id="committee" name="transaction-type" tab-index="0">
          <label for="committee">Committee</label>
        </li>
+       <li style="display:inline">
+         <input type="radio" id="vendor" name="transaction-type" tab-index="0">
+         <label for="committee">Vendor</label>
+       </li>
+
      </ul>
 </fieldset>
 </div>
@@ -90,6 +95,9 @@ $(document).ready(function() {
   })
   document.getElementById('committee').addEventListener('click', function() {
     entity_type = 'ORG'
+  })
+  document.getElementById('vendor').addEventListener('click', function() {
+    entity_type = 'VEN'
   })
 </script>
 
