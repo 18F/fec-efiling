@@ -51,13 +51,7 @@
     </header>
   <div class="usa-grid container">
     <div class="usa-width-one-half u-padding-left u-padding-right left-pane">
-      <script>
-$(document).ready(function() {
-
-	});
-</script>
-
-<h3>Enter Transaction | Contributions</h3>
+      <h3>Enter Transaction | Contributions</h3>
 <div class="padded">
 <label class="label" for="amount">Amount</label>
 <input type="number" id="amount" step=".01" min="0">
@@ -291,7 +285,7 @@ $("#contributor_id").on("input", function(e) {
 
 <script>
     function makeTable() {
-        var reportData = JSON.parse(localStorage.getItem('reportData'));
+        var reportData = JSON.parse(localStorage.getItem('reportData')) || [];
         html = ''
         reportData.forEach(function(entry) {
           html += '<tr class="simple-table__row">                       <td class="simple-table__cell">' + entry.name + '</td>                       <td class="simple-table__cell">' + entry.entityType + '</td>                       <td class="simple-table__cell"> $' + entry.amount + '</td>                     </tr>'
@@ -306,5 +300,9 @@ $("#contributor_id").on("input", function(e) {
     </div>
   </div>
 <script src="../node_modules/fec-style/fec-template/public/main.js"></script>
+
+<footer class="footer padded">
+  <h5>Built with ❤ by <a href="http://www.anthonygarvan.com">18F</a>. Code available <a href="https://github.com/18F/fec-efiling">on Github.</a> Click <a href="javascript:;" onclick="localStorage.setItem('reportData',null)">here</a> to clear data.</h5>
+</footer>
 </body>
 </html>

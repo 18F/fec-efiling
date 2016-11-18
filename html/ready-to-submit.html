@@ -79,7 +79,7 @@
 
 <script>
     function makeTable() {
-        var reportData = JSON.parse(localStorage.getItem('reportData'));
+        var reportData = JSON.parse(localStorage.getItem('reportData')) || [];
         html = ''
         reportData.forEach(function(entry) {
           html += '<tr class="simple-table__row">                       <td class="simple-table__cell">' + entry.name + '</td>                       <td class="simple-table__cell">' + entry.entityType + '</td>                       <td class="simple-table__cell"> $' + entry.amount + '</td>                     </tr>'
@@ -94,5 +94,9 @@
     </div>
   </div>
 <script src="../node_modules/fec-style/fec-template/public/main.js"></script>
+
+<footer class="footer padded">
+  <h5>Built with ❤ by <a href="http://www.anthonygarvan.com">18F</a>. Code available <a href="https://github.com/18F/fec-efiling">on Github.</a> Click <a href="javascript:;" onclick="localStorage.setItem('reportData',null)">here</a> to clear data.</h5>
+</footer>
 </body>
 </html>

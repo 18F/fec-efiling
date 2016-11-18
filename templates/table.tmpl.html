@@ -12,7 +12,7 @@
 
 <script>
     function makeTable() {
-        var reportData = JSON.parse(localStorage.getItem('reportData'));
+        var reportData = JSON.parse(localStorage.getItem('reportData')) || [];
         html = ''
         reportData.forEach(function(entry) {
           html += '<tr class="simple-table__row"> \
