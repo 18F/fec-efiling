@@ -15,13 +15,19 @@ This goal of this project is to discover how people are using efiling and how th
 This repo contains a static prototype for user testing data entry into a web-based efiling system.
 
 ## Running locally
-To view the app, just clone the repo and double click on index.html.
+To run the app, download the zip by clicking [here](https://github.com/18F/fec-efiling/archive/master.zip),
+unzip it, and double click on the index.html file in the extracted folder. This was only tested on chrome, should probably work
+in Firefox and Safari, and likely won't work in Internet Explorer.
 
+## Developing
 To build this app locally, run:
-
 ```shell
 % npm install
 % npm start
+```
+In a separate terminal, run
+```shell
+% npm run watch
 ```
 
 ## Public domain
