@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node node_modules/http-server/bin/http-server",
+    "start": "node app.js",
     "watch": " node compileTemplates.js"
   },
   "repository": {
@@ -19,7 +19,9 @@
   },
   "homepage": "https://github.com/18F/fec-efiling#readme",
   "dependencies": {
+    "basic-auth": "^1.1.0",
     "fec-style": "18F/fec-style#prototype/fec-efiling",
-    "http-server": "^0.9.0"
+    "finalhandler": "^0.5.1",
+    "serve-static": "^1.11.1"
   }
 }
