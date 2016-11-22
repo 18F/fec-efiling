@@ -2,7 +2,8 @@ var http = require('http')
 var auth = require('basic-auth')
 var finalhandler = require('finalhandler');
 var serveStatic = require('serve-static');
-var serve = serveStatic("./");
+var serve = serveStatic("./",
+              {setHeaders: function(res, path) {res.setHeader('Access-Control-Allow-Origin', '*')}});
 
 
 var server = http.createServer(function (req, res) {
