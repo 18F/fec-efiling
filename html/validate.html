@@ -67,74 +67,21 @@
     </header>
   <div class="usa-grid container">
     <style>
-#duplicates-header {
+#validation-header {
   font-weight: bold;
   text-decoration: underline;
 }
 </style>
-
-<h3>Merge wizard (Step 1 of 2)</h3>
-<h3 style="font-weight:normal">Merge wizard found <span id="num-duplicates">4</span> duplicate contacts.</h3>
-<p>First, mark which one of these contacts you would like the merge wizard to compare.</p>
-<div id="duplicates" class="container padded"></div>
-
-<div class="container t-centered">
-  <button id="ignore" class="button--standard" style="width:30%; margin:1%;">ignore this set, see next</button>
-  <button id="compare" class="button--cta" style="width:30%; margin:1%;" onclick="compare()">compare checked contacts</button>
+<div class="container">
+<div class="message message--success">
+  <h2>Success!</h2>
+  <h3>There are no validation errors.</h3>
+</div>
 </div>
 
-<script>
-  var reportData = JSON.parse(localStorage.getItem('reportData')) || []
-  var dups = {}
-
-  reportData.forEach(function(entry) {
-      if(!(entry.name in dups)) {
-            dups[entry.name] = [entry];
-      } else {
-        dups[entry.name].push(entry)
-      }
-  })
-
-  var duplicates = []
-  Object.keys(dups).forEach(function(name) {
-      if(dups[name].length > 1) {
-        duplicates = dups[name]
-      }
-  })
-
-  document.getElementById('num-duplicates').innerHTML = duplicates.length;
-  var html = ''
-  function getDuplicateSlab(entry, i) {
-      return '<div class="usa-width-one-half duplicate padded">' +
-                '<input type="checkbox" id="checkbox-' + i + '" index="' + i + '">' +
-                '<label style="border:none;background-color:transparent;font-weight:bold;" for="checkbox-' + i +
-                '">merge this contact</label>' +
-                '<p style="font-weight: bold">' + entry.name + '</p>' +
-                '<p>' + entry.city + ', ' + entry.state + ', ' + entry.zip + '</p>' +
-                '<p>' + entry.occupation + '</p>' +
-                '<p>' + entry.employer + '</p>' +
-                '<p> Contribution ' + entry.date + ': $' + entry.amount + '</p>' +
-              '</div>';
-  }
-
-  for(var i = 0; i < duplicates.length; i += 2) {
-    html += '<div class="usa-grid padded">' +
-                getDuplicateSlab(duplicates[i], i) +
-                getDuplicateSlab(duplicates[i+1], i+1) +
-              '</div>';
-  }
-
-  function compare() {
-    var forComparison = []
-    document.querySelectorAll(':checked').forEach(function(elem) {
-        forComparison.push(duplicates[elem.getAttribute('index')]);
-    })
-    localStorage.setItem('forComparison', JSON.stringify(forComparison));
-    window.location.href = 'duplicates-merge.html';
-  }
-
-  document.getElementById("duplicates").innerHTML = html;
-</script>
+<div class="container t-centered padded">
+  <a href="submit.html" class="button--cta" style="width:30%">Proceed to preview</a>
+</div>
 
   </div>
 <script src="../node_modules/fec-style/fec-template/public/main.js"></script>

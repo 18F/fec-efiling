@@ -86,8 +86,21 @@ function compile() {
                                                             content: duplicatesOne,
                                                             header: submissionHeader,
                                                             rootDir: '../'})
+  var duplicatesTwo = read('templates/duplicates-two.tmpl.html')
+  var duplicatesMerge = read('templates/master.tmpl.html', {breadcrumbs: breadcrumbsSubmission,
+                                                            content: duplicatesTwo,
+                                                            header: submissionHeader,
+                                                            rootDir: '../'})
 
+  var validation = read('templates/master.tmpl.html', {breadcrumbs: breadcrumbsSubmission,
+                                                            content: read('templates/validate.tmpl.html'),
+                                                            header: submissionHeader,
+                                                            rootDir: '../'})
 
+  var submit = read('templates/master.tmpl.html', {breadcrumbs: breadcrumbsSubmission,
+                                                            content: read('templates/submit.tmpl.html', {table: table}),
+                                                            header: submissionHeader,
+                                                            rootDir: '../'})  ;
 
 
 
@@ -117,6 +130,15 @@ function compile() {
 
   fs.writeFileSync('html/duplicates-check.html', duplicatesCheck);
   console.log('written: html/duplicates-check.html');
+
+  fs.writeFileSync('html/duplicates-merge.html', duplicatesMerge);
+  console.log('written: html/duplicates-merge.html');
+
+  fs.writeFileSync('html/validate.html', validation);
+  console.log('written: html/validate.html');
+
+  fs.writeFileSync('html/submit.html', submit);
+  console.log('written: html/submit.html');
 }
 
 fs.watch('templates', {recursive: true}, compile)

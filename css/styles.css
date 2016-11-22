@@ -6,3 +6,7 @@
 .padded {
   padding: 1rem !important;
 }
+
+.duplicate {
+  border: 1px solid gray;
+}

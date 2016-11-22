@@ -73,64 +73,63 @@
 }
 </style>
 
-<h3>Merge wizard (Step 1 of 2)</h3>
-<h3 style="font-weight:normal">Merge wizard found <span id="num-duplicates">4</span> duplicate contacts.</h3>
-<p>First, mark which one of these contacts you would like the merge wizard to compare.</p>
+<h3>Merge wizard (Step 2 of 2)</h3>
+<p>Compare contacts: which version of the contact would you like to keep?</p>
 <div id="duplicates" class="container padded"></div>
 
-<div class="container t-centered">
-  <button id="ignore" class="button--standard" style="width:30%; margin:1%;">ignore this set, see next</button>
-  <button id="compare" class="button--cta" style="width:30%; margin:1%;" onclick="compare()">compare checked contacts</button>
+<div class="message message--alert">
+
+<p>Merging these contacts creates changes from what was included in the following reports:</p>
+<ul class="list--bulleted" style="margin-left:10%">
+  <li>August 2016 Monthly</li>
+  <li>September 2016 Monthly</li>
+</ul>
+<p>If the changes made involve significant changes in activity of an individual, it
+  may be necessary to file amendments.</p>
+<p>
+  <input type="checkbox" id="amendment">
+  <label for="amendment">create amendments</label>
+</p>
+
+<p>
+  Created amendments will be visibule under <a href="select-existing-report.html">"work on existing reports"</a>
+  on the home screen.
+</p>
 </div>
 
+<div class="container t-centered padded">
+  <a href="validate.html" class="button--cta" style="width:30%">save contact as current and proceed</a></br>
+  <a href="../index.html">cancel, go back home</a></br>
+  <a href="duplicates-check.html"> < back to contact selection</a>
+</div>
 <script>
-  var reportData = JSON.parse(localStorage.getItem('reportData')) || []
-  var dups = {}
 
-  reportData.forEach(function(entry) {
-      if(!(entry.name in dups)) {
-            dups[entry.name] = [entry];
-      } else {
-        dups[entry.name].push(entry)
-      }
-  })
-
-  var duplicates = []
-  Object.keys(dups).forEach(function(name) {
-      if(dups[name].length > 1) {
-        duplicates = dups[name]
-      }
-  })
-
-  document.getElementById('num-duplicates').innerHTML = duplicates.length;
+  var duplicates = JSON.parse(localStorage.getItem('forComparison'));
   var html = ''
   function getDuplicateSlab(entry, i) {
-      return '<div class="usa-width-one-half duplicate padded">' +
-                '<input type="checkbox" id="checkbox-' + i + '" index="' + i + '">' +
-                '<label style="border:none;background-color:transparent;font-weight:bold;" for="checkbox-' + i +
-                '">merge this contact</label>' +
+      if(entry) {
+      return '<div class="usa-width-one-third padded">' +
+                '<input type="radio" id="radio-' + i + '" index="' + i + '" name="radio">' +
+                '<label style="border:none;background-color:transparent;font-weight:bold;" for="radio-' + i +
+                '">select this record</label>' +
+                '<div class="duplicate padded">' +
                 '<p style="font-weight: bold">' + entry.name + '</p>' +
                 '<p>' + entry.city + ', ' + entry.state + ', ' + entry.zip + '</p>' +
                 '<p>' + entry.occupation + '</p>' +
                 '<p>' + entry.employer + '</p>' +
                 '<p> Contribution ' + entry.date + ': $' + entry.amount + '</p>' +
+                '</div>' +
               '</div>';
+      }
+      return ''
   }
 
-  for(var i = 0; i < duplicates.length; i += 2) {
+  for(var i = 0; i < duplicates.length; i += 3) {
     html += '<div class="usa-grid padded">' +
                 getDuplicateSlab(duplicates[i], i) +
                 getDuplicateSlab(duplicates[i+1], i+1) +
+                getDuplicateSlab(duplicates[i+2], i+2)
               '</div>';
-  }
-
-  function compare() {
-    var forComparison = []
-    document.querySelectorAll(':checked').forEach(function(elem) {
-        forComparison.push(duplicates[elem.getAttribute('index')]);
-    })
-    localStorage.setItem('forComparison', JSON.stringify(forComparison));
-    window.location.href = 'duplicates-merge.html';
   }
 
   document.getElementById("duplicates").innerHTML = html;

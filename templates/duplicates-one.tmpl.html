@@ -10,6 +10,11 @@
 <p>First, mark which one of these contacts you would like the merge wizard to compare.</p>
 <div id="duplicates" class="container padded"></div>
 
+<div class="container t-centered">
+  <button id="ignore" class="button--standard" style="width:30%; margin:1%;">ignore this set, see next</button>
+  <button id="compare" class="button--cta" style="width:30%; margin:1%;" onclick="compare()">compare checked contacts</button>
+</div>
+
 <script>
   var reportData = JSON.parse(localStorage.getItem('reportData')) || []
   var dups = {}
@@ -29,13 +34,14 @@
       }
   })
 
+  document.getElementById('num-duplicates').innerHTML = duplicates.length;
   var html = ''
   function getDuplicateSlab(entry, i) {
-      return '<div class="usa-width-one-half slab--neutral">' +
-                '<input type="checkbox" id="checkbox-' + i + '">' +
-                '<label for="checkbox-' + i + '">' +
-                    entry.name +
-                '</label>' +
+      return '<div class="usa-width-one-half duplicate padded">' +
+                '<input type="checkbox" id="checkbox-' + i + '" index="' + i + '">' +
+                '<label style="border:none;background-color:transparent;font-weight:bold;" for="checkbox-' + i +
+                '">merge this contact</label>' +
+                '<p style="font-weight: bold">' + entry.name + '</p>' +
                 '<p>' + entry.city + ', ' + entry.state + ', ' + entry.zip + '</p>' +
                 '<p>' + entry.occupation + '</p>' +
                 '<p>' + entry.employer + '</p>' +
@@ -48,6 +54,15 @@
                 getDuplicateSlab(duplicates[i], i) +
                 getDuplicateSlab(duplicates[i+1], i+1) +
               '</div>';
+  }
+
+  function compare() {
+    var forComparison = []
+    document.querySelectorAll(':checked').forEach(function(elem) {
+        forComparison.push(duplicates[elem.getAttribute('index')]);
+    })
+    localStorage.setItem('forComparison', JSON.stringify(forComparison));
+    window.location.href = 'duplicates-merge.html';
   }
 
   document.getElementById("duplicates").innerHTML = html;

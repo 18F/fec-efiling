@@ -67,74 +67,46 @@
     </header>
   <div class="usa-grid container">
     <style>
-#duplicates-header {
+#submit-header {
   font-weight: bold;
   text-decoration: underline;
 }
 </style>
 
-<h3>Merge wizard (Step 1 of 2)</h3>
-<h3 style="font-weight:normal">Merge wizard found <span id="num-duplicates">4</span> duplicate contacts.</h3>
-<p>First, mark which one of these contacts you would like the merge wizard to compare.</p>
-<div id="duplicates" class="container padded"></div>
-
 <div class="container t-centered">
-  <button id="ignore" class="button--standard" style="width:30%; margin:1%;">ignore this set, see next</button>
-  <button id="compare" class="button--cta" style="width:30%; margin:1%;" onclick="compare()">compare checked contacts</button>
-</div>
+  <table class="simple-table simple-table--display">
+  <thead class="simple-table__header">
+    <tr>
+      <th class="simple-table__header-cell">Name</th>
+      <th class="simple-table__header-cell">Type</th>
+      <th class="simple-table__header-cell">Amount</th>
+  </tr>
+  </thead>
+  <tbody id="table-data-container">
+  </tbody>
+</table>
 
 <script>
-  var reportData = JSON.parse(localStorage.getItem('reportData')) || []
-  var dups = {}
+    function makeTable() {
+        var reportData = JSON.parse(localStorage.getItem('reportData')) || [];
+        html = ''
+        reportData.forEach(function(entry) {
+          html += '<tr class="simple-table__row">                       <td class="simple-table__cell">' + entry.name + '</td>                       <td class="simple-table__cell">' + entry.entityType + '</td>                       <td class="simple-table__cell"> $' + entry.amount + '</td>                     </tr>'
+        })
 
-  reportData.forEach(function(entry) {
-      if(!(entry.name in dups)) {
-            dups[entry.name] = [entry];
-      } else {
-        dups[entry.name].push(entry)
-      }
-  })
+        document.getElementById("table-data-container").innerHTML = html;
+    };
 
-  var duplicates = []
-  Object.keys(dups).forEach(function(name) {
-      if(dups[name].length > 1) {
-        duplicates = dups[name]
-      }
-  })
-
-  document.getElementById('num-duplicates').innerHTML = duplicates.length;
-  var html = ''
-  function getDuplicateSlab(entry, i) {
-      return '<div class="usa-width-one-half duplicate padded">' +
-                '<input type="checkbox" id="checkbox-' + i + '" index="' + i + '">' +
-                '<label style="border:none;background-color:transparent;font-weight:bold;" for="checkbox-' + i +
-                '">merge this contact</label>' +
-                '<p style="font-weight: bold">' + entry.name + '</p>' +
-                '<p>' + entry.city + ', ' + entry.state + ', ' + entry.zip + '</p>' +
-                '<p>' + entry.occupation + '</p>' +
-                '<p>' + entry.employer + '</p>' +
-                '<p> Contribution ' + entry.date + ': $' + entry.amount + '</p>' +
-              '</div>';
-  }
-
-  for(var i = 0; i < duplicates.length; i += 2) {
-    html += '<div class="usa-grid padded">' +
-                getDuplicateSlab(duplicates[i], i) +
-                getDuplicateSlab(duplicates[i+1], i+1) +
-              '</div>';
-  }
-
-  function compare() {
-    var forComparison = []
-    document.querySelectorAll(':checked').forEach(function(elem) {
-        forComparison.push(duplicates[elem.getAttribute('index')]);
-    })
-    localStorage.setItem('forComparison', JSON.stringify(forComparison));
-    window.location.href = 'duplicates-merge.html';
-  }
-
-  document.getElementById("duplicates").innerHTML = html;
+    makeTable();
 </script>
+
+</div>
+
+<div class="container t-centered padded">
+  <button class="button--cta" style="width:30%" onclick="alert('You have successfully submitted!'); window.location.href='../index.html';">
+    Submit
+  </button>
+</div>
 
   </div>
 <script src="../node_modules/fec-style/fec-template/public/main.js"></script>
