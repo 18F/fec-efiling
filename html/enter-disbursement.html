@@ -51,7 +51,7 @@
     </header>
   <div class="usa-grid container">
     <div class="usa-width-one-half u-padding-left u-padding-right left-pane">
-      <h3>Enter Transaction | Disbursements</h3>
+  <h3>Enter Transaction | Disbursements</h3>
 <div class="padded">
 <label class="label" for="amount">Amount</label>
 <input type="number" id="amount" step=".01" min="0">
@@ -250,7 +250,8 @@ $("#contributor_id").on("input", function(e) {
     var reportData = JSON.parse(localStorage.getItem('reportData'));
     var entry = {'name': $('#result-name').text() || $('#name').val(),
                   'city': $('#result-city').text() || $('#city').val(),
-                  'state': $('#result-state').text() || $('#zip').val(),
+                  'state': $('#result-state').text() || $('#state').val(),
+                  'zip': $('#result-zip').text() || $('#zip').val(),
                   'amount': $('#amount').val(),
                   'date': $('#transaction-date').val(),
                   'occupation': $('#result-occupation').text() || $('#occupation').val(),
@@ -277,9 +278,9 @@ $("#contributor_id").on("input", function(e) {
   })
 </script>
 
-    </div>
-    <div class="usa-width-one-half">
-      <table class="simple-table simple-table--display">
+</div>
+<div class="usa-width-one-half">
+  <table class="simple-table simple-table--display">
   <thead class="simple-table__header">
     <tr>
       <th class="simple-table__header-cell">Name</th>
@@ -305,7 +306,8 @@ $("#contributor_id").on("input", function(e) {
     makeTable();
 </script>
 
-    </div>
+</div>
+
   </div>
 <script src="../node_modules/fec-style/fec-template/public/main.js"></script>
 

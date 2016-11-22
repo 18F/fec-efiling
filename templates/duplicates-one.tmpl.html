@@ -1,0 +1,54 @@
+<style>
+#duplicates-header {
+  font-weight: bold;
+  text-decoration: underline;
+}
+</style>
+
+<h3>Merge wizard (Step 1 of 2)</h3>
+<h3 style="font-weight:normal">Merge wizard found <span id="num-duplicates">4</span> duplicate contacts.</h3>
+<p>First, mark which one of these contacts you would like the merge wizard to compare.</p>
+<div id="duplicates" class="container padded"></div>
+
+<script>
+  var reportData = JSON.parse(localStorage.getItem('reportData')) || []
+  var dups = {}
+
+  reportData.forEach(function(entry) {
+      if(!(entry.name in dups)) {
+            dups[entry.name] = [entry];
+      } else {
+        dups[entry.name].push(entry)
+      }
+  })
+
+  var duplicates = []
+  Object.keys(dups).forEach(function(name) {
+      if(dups[name].length > 1) {
+        duplicates = dups[name]
+      }
+  })
+
+  var html = ''
+  function getDuplicateSlab(entry, i) {
+      return '<div class="usa-width-one-half slab--neutral">' +
+                '<input type="checkbox" id="checkbox-' + i + '">' +
+                '<label for="checkbox-' + i + '">' +
+                    entry.name +
+                '</label>' +
+                '<p>' + entry.city + ', ' + entry.state + ', ' + entry.zip + '</p>' +
+                '<p>' + entry.occupation + '</p>' +
+                '<p>' + entry.employer + '</p>' +
+                '<p> Contribution ' + entry.date + ': $' + entry.amount + '</p>' +
+              '</div>';
+  }
+
+  for(var i = 0; i < duplicates.length; i += 2) {
+    html += '<div class="usa-grid padded">' +
+                getDuplicateSlab(duplicates[i], i) +
+                getDuplicateSlab(duplicates[i+1], i+1) +
+              '</div>';
+  }
+
+  document.getElementById("duplicates").innerHTML = html;
+</script>

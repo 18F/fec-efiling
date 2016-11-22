@@ -1,0 +1,131 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>FEC eFiling Prototype</title>
+  <meta name="description" content="A static prototype for testing efiling data entry.">
+  <meta name="author" content="18F">
+
+  <link rel="stylesheet" href="../node_modules/fec-style/css/styles.css">
+  <link rel="stylesheet" href="../css/styles.css">
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+  <script>
+    BASE_PATH = '/data';
+    CMS_URL = 'https://beta.fec.gov',
+    API_LOCATION = 'https://api.open.fec.gov/';
+    API_VERSION = 'v1';
+    API_KEY = '5yyI90SU3Xb73TVlv4wrEhQxYcCwMWCywQiGdYbJ'
+  </script>
+
+  <link rel="icon" type="image/png" href="../node_modules/fec-style/img/favicon/favicon-196x196.png" sizes="196x196">
+  <link rel="icon" type="image/png" href="../node_modules/fec-style/img/favicon/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="../node_modules/fec-style/img/favicon/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="../node_modules/fec-style/img/favicon/favicon-16x16.png" sizes="16x16">
+  <link rel="icon" type="image/png" href="../node_modules/fec-style/img/favicon/favicon-128.png" sizes="128x128">
+</head>
+
+<body>
+  <div class="slab slab--primary" style="padding:2rem;">
+    <ul class="breadcrumbs">
+  <li class="breadcrumbs__item"><a href="../index.html" class="breadcrumbs__link" rel="Home">Home</a></li>
+  <li class="breadcrumbs__item">
+    <span class="breadcrumbs__separator">›</span>
+    <a href="select-transaction-type.html" class="breadcrumbs__link" rel="Home">Existing Report</a>
+  </li>
+  <li class="breadcrumbs__item">
+    <span class="breadcrumbs__separator">›</span>
+    Submit
+  </li>
+</ul>
+
+  </div>
+    <header class="heading--section heading--with-action">
+      <div class="container">
+<h2 class="heading__left">Friends of Bo | Welcome Back!</h2>
+<h3 class="heading__right">
+  Due in: 3 days
+</h3>
+</div>
+<div class="container">
+<h3 style="color:gray">Submission process</h3>
+</div>
+<div class="container">
+  <h4 style="margin-left:30%">
+    <ul class="list--flat">
+     <li><span id="duplicates-header">Duplicates check</span> ></li>
+     <li><span id="validation-header">Validation<span> ></li>
+     <li><span id="submit-header">Preview, sign and submit</span></li>
+    </ul>
+  </h4>
+</div>
+
+    </header>
+  <div class="usa-grid container">
+    <style>
+#duplicates-header {
+  font-weight: bold;
+  text-decoration: underline;
+}
+</style>
+
+<h3>Merge wizard (Step 1 of 2)</h3>
+<h3 style="font-weight:normal">Merge wizard found <span id="num-duplicates">4</span> duplicate contacts.</h3>
+<p>First, mark which one of these contacts you would like the merge wizard to compare.</p>
+<div id="duplicates" class="container padded"></div>
+
+<script>
+  var reportData = JSON.parse(localStorage.getItem('reportData')) || []
+  var dups = {}
+
+  reportData.forEach(function(entry) {
+      if(!(entry.name in dups)) {
+            dups[entry.name] = [entry];
+      } else {
+        dups[entry.name].push(entry)
+      }
+  })
+
+  var duplicates = []
+  Object.keys(dups).forEach(function(name) {
+      if(dups[name].length > 1) {
+        duplicates = dups[name]
+      }
+  })
+
+  var html = ''
+  function getDuplicateSlab(entry, i) {
+      return '<div class="usa-width-one-half slab--neutral">' +
+                '<input type="checkbox" id="checkbox-' + i + '">' +
+                '<label for="checkbox-' + i + '">' +
+                    entry.name +
+                '</label>' +
+                '<p>' + entry.city + ', ' + entry.state + ', ' + entry.zip + '</p>' +
+                '<p>' + entry.occupation + '</p>' +
+                '<p>' + entry.employer + '</p>' +
+                '<p> Contribution ' + entry.date + ': $' + entry.amount + '</p>' +
+              '</div>';
+  }
+
+  for(var i = 0; i < duplicates.length; i += 2) {
+    html += '<div class="usa-grid padded">' +
+                getDuplicateSlab(duplicates[i], i) +
+                getDuplicateSlab(duplicates[i+1], i+1) +
+              '</div>';
+  }
+
+  document.getElementById("duplicates").innerHTML = html;
+</script>
+
+  </div>
+<script src="../node_modules/fec-style/fec-template/public/main.js"></script>
+
+<footer class="footer padded">
+  <h5>Built with ❤ by <a href="http://www.anthonygarvan.com">18F</a>. Code available <a href="https://github.com/18F/fec-efiling">on Github.</a> Click <a href="javascript:;" onclick="localStorage.setItem('reportData',null)">here</a> to clear data.</h5>
+</footer>
+</body>
+</html>

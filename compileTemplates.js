@@ -24,52 +24,69 @@ function compile() {
   var table = read('templates/table.tmpl.html')
 
   var index = read('templates/master.tmpl.html', {breadcrumbs: read('templates/breadcrumbs-home.tmpl.html', {rootDir: ''}),
+                                                    content: read('templates/entry-content.tmpl.html', {
                                                     leftPane: read('templates/landing.tmpl.html', {rootDir: ''}),
-                                                    rightPane: "",
+                                                    rightPane: ""}),
                                                     header: header,
                                                     rootDir: ''});
 
   var selectExistingReport = read('templates/master.tmpl.html', {breadcrumbs: read('templates/breadcrumbs-home.tmpl.html', {rootDir: '../'}),
+                                                            content: read('templates/entry-content.tmpl.html', {
                                                             leftPane: read('templates/landing.tmpl.html', {rootDir: '../'}),
-                                                            rightPane: existingReport,
+                                                            rightPane: existingReport}),
                                                             header: header,
                                                             rootDir: '../'});
 
   var selectTransactionType = read('templates/master.tmpl.html', {breadcrumbs: breadCrumbsExistingReport,
+                                                            content: read('templates/entry-content.tmpl.html', {
                                                             leftPane: chooseTransactionType,
-                                                            rightPane: "",
+                                                            rightPane: ""}),
                                                             header: reportHeader,
                                                             rootDir: '../'});
 
   var selectReceiptEntryType = read('templates/master.tmpl.html', {breadcrumbs: breadCrumbsExistingReport,
+                                                            content: read('templates/entry-content.tmpl.html', {
                                                             leftPane: chooseReceiptEntryType,
-                                                            rightPane: "",
+                                                            rightPane: ""}),
                                                             header: reportHeader,
                                                             rootDir: '../'});
 
   var selectDisbursementEntryType = read('templates/master.tmpl.html', {breadcrumbs: breadCrumbsExistingReport,
+                                                            content: read('templates/entry-content.tmpl.html', {
                                                             leftPane: chooseDisbursementEntryType,
-                                                            rightPane: "",
+                                                            rightPane: ""}),
                                                             header: reportHeader,
                                                             rootDir: '../'});
 
   var enterReceipt = read('templates/master.tmpl.html', {breadcrumbs: breadCrumbsExistingReport,
+                                                            content: read('templates/entry-content.tmpl.html', {
                                                             leftPane: enterReceipt,
-                                                            rightPane: table,
+                                                            rightPane: table}),
                                                             header: reportHeader,
                                                             rootDir: '../'});
 
   var enterDisbursement = read('templates/master.tmpl.html', {breadcrumbs: breadCrumbsExistingReport,
+                                                            content: read('templates/entry-content.tmpl.html', {
                                                             leftPane: enterDisbursement,
-                                                            rightPane: table,
+                                                            rightPane: table}),
                                                             header: reportHeader,
                                                             rootDir: '../'});
 
   var readyToSubmit = read('templates/master.tmpl.html', {breadcrumbs: breadCrumbsExistingReport,
+                                                            content: read('templates/entry-content.tmpl.html', {
                                                             leftPane: readyToSubmitPane,
-                                                            rightPane: table,
+                                                            rightPane: table}),
                                                             header: reportHeader,
                                                             rootDir: '../'});
+
+  var breadcrumbsSubmission = read('templates/breadcrumbs-submission.tmpl.html')
+  var submissionHeader = read('templates/submission-header.tmpl.html')
+  var duplicatesOne = read('templates/duplicates-one.tmpl.html')
+  var duplicatesCheck = read('templates/master.tmpl.html', {breadcrumbs: breadcrumbsSubmission,
+                                                            content: duplicatesOne,
+                                                            header: submissionHeader,
+                                                            rootDir: '../'})
+
 
 
 
@@ -97,6 +114,9 @@ function compile() {
 
   fs.writeFileSync('html/ready-to-submit.html', readyToSubmit);
   console.log('written: html/ready-to-submit.html');
+
+  fs.writeFileSync('html/duplicates-check.html', duplicatesCheck);
+  console.log('written: html/duplicates-check.html');
 }
 
 fs.watch('templates', {recursive: true}, compile)
