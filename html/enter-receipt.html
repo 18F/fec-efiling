@@ -88,12 +88,28 @@
 </script>
 
 
-<div class="padded">
-<label class="label" for="contributor_id">Contact Look-up</label>
+<div class="padded" style="background-color:lightgrey;overflow:hidden;">
+<div style="float:left;width:35%">
+<label class="label" for="contributor_id">Last Name</label>
 <input id="contributor_id" type="text" class="combo__input" list="contributors">
 <datalist id="contributors">
   <option>none of these, add new</option>
 </datalist>
+</div>
+
+<div style="float:left;margin-left:10px;width:35%">
+<label class="label" for="name">First Name</label>
+<input type="text" id="name">
+</div>
+
+<div style="float:left;margin-left:10px;width:15%">
+<label class="label" for="suffix">Suffix</label>
+<select id="suffix">
+  <option>Jr.</option>
+  <option>III</option>
+</select>
+</div>
+
 </div>
 <div id="result-found" class="message message--success" style="display:none">
 <p id="result-name"><p>
@@ -133,7 +149,8 @@ $("#contributor_id").on("input", function(e) {
         dataList.empty();
         if(res.results.length) {
           for(var i=0; i <res.results.length; i++) {
-            var opt = $("<option></option>").attr("value", res.results[i].contributor_name);
+            var opt = $("<option></option>").attr("value", res.results[i].contributor_name)
+                            .text('(Last Contribution: $' + Math.round(1000*Math.random()) + ')');
             dataList.append(opt);
           }
         }
@@ -142,10 +159,6 @@ $("#contributor_id").on("input", function(e) {
 </script>
 
 <div id="manual-entry">
-<div class="padded">
-<label class="label" for="name">Name</label>
-<input type="text" id="name">
-</div>
 
 <div class="padded">
 <label class="label" for="address">Address</label>
@@ -240,7 +253,8 @@ $("#contributor_id").on("input", function(e) {
 <script>
   function saveTransaction() {
     var reportData = JSON.parse(localStorage.getItem('reportData'));
-    var entry = {'name': $('#result-name').text() || $('#name').val(),
+    var name = $('#result-name').text() || $('#contributor_id').val() + ', ' + $('#name').val() + ' ' + $('#suffix').val()
+    var entry = {'name': name.toUpperCase(),
                   'city': $('#result-city').text() || $('#city').val(),
                   'state': $('#result-state').text() || $('#state').val(),
                   'zip': $('#result-zip').text() || $('#zip').val(),
