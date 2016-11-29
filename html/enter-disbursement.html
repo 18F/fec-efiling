@@ -51,16 +51,37 @@
     </header>
   <div class="usa-grid container">
     <div class="usa-width-one-half u-padding-left u-padding-right left-pane">
-  <h3>Enter Transaction | Disbursements</h3>
-<div class="padded">
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+<div class="usa-grid container">
+<h3>Enter Transaction | Disbursements</h3>
+<div class="padded usa-width-two-thirds">
 <label class="label" for="amount">Amount</label>
 <input type="number" id="amount" step=".01" min="0">
 </div>
 
-<div class="padded">
+<div class="padded usa-width-two-thirds">
 <label class="label" for="transaction-date">Transaction Date</label>
 <input type="date" id="transaction-date">
+<div id="date-warning" style="color:red; display:none;">⚠ this date is outside of the reporting period</div>
 </div>
+<div class="padded usa-width-one-third">
+<label class="label" for="election">Election</label>
+<select id="election">
+  <option>primary '16</option>
+  <option>general '16</option>
+<select>
+</div>
+</div>
+<script>
+$('#transaction-date').on('input', function() {
+  if($(this).val().indexOf('2016-09') < 0) {
+    $('#date-warning').show();
+  } else {
+    $('#date-warning').hide();
+  }
+})
+</script>
 
 <div class="padded" style="border-top: 1px solid gray">
 <fieldset>
@@ -98,16 +119,16 @@
 
 <div class="padded" style="background-color:lightgrey;overflow:hidden;">
 <div style="float:left;width:35%">
-<label class="label" for="contributor_id">Last Name</label>
-<input id="contributor_id" type="text" class="combo__input" list="contributors">
+<label class="label" for="last-name">Last Name</label>
+<input id="last-name" type="text" class="combo__input" list="contributors">
 <datalist id="contributors">
   <option>none of these, add new</option>
 </datalist>
 </div>
 
 <div style="float:left;margin-left:10px;width:35%">
-<label class="label" for="name">First Name</label>
-<input type="text" id="name">
+<label class="label" for="first-name">First Name</label>
+<input type="text" id="first-name">
 </div>
 
 <div style="float:left;margin-left:10px;width:15%">
@@ -128,9 +149,8 @@
 <p id="result-occupation"></p>
 <p id="result-employer"></p>
 </div>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script>
-$("#contributor_id").on("input", function(e) {
+$("#last-name").on("input", function(e) {
     var val = $(this).val();
     if(val.length < 3) return;
     $.getJSON('https://api.open.fec.gov/v1/schedules/schedule_a/?api_key=' +
@@ -140,19 +160,13 @@ $("#contributor_id").on("input", function(e) {
             return result.contributor_name === val;
         })
         if(matches.length > 0) {
-          $('#manual-entry').hide();
-          $('#result-name').text(matches[0].contributor_name);
-          $('#result-city').text(matches[0].contributor_city);
-          $('#result-state').text(matches[0].contributor_state);
-          $('#result-zip').text(matches[0].contributor_zip);
-          $('#result-occupation').text(matches[0].contributor_occupation);
-          $('#result-employer').text(matches[0].contributor_employer);
-          $('#contributor_id').css('background-color', 'lightgreen')
-          $('#result-found').show();
-        } else {
-          $('#contributor_id').css('background-color', '')
-          $('#manual-entry').show();
-          $('#result-found').hide();
+          $('#first-name').val($.trim(matches[0].contributor_name.split(',')[1]))
+          $('#last-name').val($.trim(matches[0].contributor_name.split(',')[0]));
+          $('#city').val(matches[0].contributor_city);
+          $('#state').val(matches[0].contributor_state);
+          $('#zip').val(matches[0].contributor_zip);
+          $('#occupation').val(matches[0].contributor_occupation);
+          $('#employer').val(matches[0].contributor_employer);
         }
         var dataList = $("#contributors");
         dataList.empty();
@@ -170,18 +184,13 @@ $("#contributor_id").on("input", function(e) {
 <div id="manual-entry">
 
 <div class="padded">
-<label class="label" for="address">Address</label>
-<input type="text" id="address">
+<label class="label" for="city">City</label>
+<input type="text" id="city">
 </div>
 
 <div class="padded">
 <label class="label" for="zip">Zip</label>
 <input type="text" id="zip">
-</div>
-
-<div class="padded">
-<label class="label" for="city">City</label>
-<input type="text" id="city">
 </div>
 
 <div class="padded">
@@ -262,15 +271,15 @@ $("#contributor_id").on("input", function(e) {
 <script>
   function saveTransaction() {
     var reportData = JSON.parse(localStorage.getItem('reportData'));
-    var name = $('#result-name').text() || $('#contributor_id').val() + ', ' + $('#name').val() + ' ' + $('#suffix').val()
+    var name = $('#last-name').val() + ', ' + $('#first-name').val() + ' ' + $('#suffix').val()
     var entry = {'name': name.toUpperCase(),
-                  'city': $('#result-city').text() || $('#city').val(),
-                  'state': $('#result-state').text() || $('#state').val(),
-                  'zip': $('#result-zip').text() || $('#zip').val(),
+                  'city': $('#city').val(),
+                  'state': $('#state').val(),
+                  'zip': $('#zip').val(),
                   'amount': $('#amount').val(),
                   'date': $('#transaction-date').val(),
-                  'occupation': $('#result-occupation').text() || $('#occupation').val(),
-                  'employer': $('#result-employer').text() || $('#employer').val(),
+                  'occupation': $('#occupation').val(),
+                  'employer': $('#employer').val(),
                   'type': 'receipt',
                   'entityType': entity_type}
     if(reportData) {
