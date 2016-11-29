@@ -72,7 +72,7 @@ $("#contributor_id").on("input", function(e) {
         var dataList = $("#contributors");
         dataList.empty();
         if(res.results.length) {
-          for(var i=0; i <res.results.length; i++) {
+          for(var i=0; i < Math.min(res.results.length, 10); i++) {
             var opt = $("<option></option>").attr("value", res.results[i].contributor_name)
                             .text('(Last Contribution: $' + Math.round(1000*Math.random()) + ')');
             dataList.append(opt);
@@ -170,7 +170,7 @@ $("#contributor_id").on("input", function(e) {
 
 <!-- buttons !-->
 <div class="padded t-centered">
-  <p><button id="add-another" class="button--cta" style="width:80%">Save and add another</button></p>
+  <p><button id="add-another" class="button--cta" style="width:80%">Save and add another transaction</button></p>
   <p><button id="save-and-finish" class="button--standard" style="width:80%">Save and finish</button><p>
   <p><a href="select-transaction-type.html">cancel</a></p>
 </div>
