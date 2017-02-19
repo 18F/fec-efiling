@@ -20,6 +20,9 @@ unzip it, and double click on the index.html file in the extracted folder. This 
 in Firefox and Safari, and likely won't work in Internet Explorer.
 
 ## Developing
+
+You will want to have values for `PORT`, `FEC_USERNAME`, and `FEC_PASSWORD` set in your environment.
+
 To build this app locally, run:
 ```shell
 % npm install

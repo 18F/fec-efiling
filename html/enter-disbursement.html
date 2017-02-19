@@ -104,15 +104,15 @@ $('#transaction-date').on('input', function() {
 </fieldset>
 </div>
 <script>
-  var entity_type = 'IND'
+  var is_individual = 'true'
   document.getElementById('individual').addEventListener('click', function() {
-    entity_type = 'IND'
+    is_individual = 'true'
   })
   document.getElementById('committee').addEventListener('click', function() {
-    entity_type = 'ORG'
+    is_individual = 'false'
   })
   document.getElementById('vendor').addEventListener('click', function() {
-    entity_type = 'VEN'
+    is_individual = 'false'
   })
 </script>
 
@@ -153,8 +153,8 @@ $('#transaction-date').on('input', function() {
 $("#last-name").on("input", function(e) {
     var val = $(this).val();
     if(val.length < 3) return;
-    $.getJSON('https://api.open.fec.gov/v1/schedules/schedule_a/?api_key=' +
-        API_KEY + '&contributor_name=' + val + '&entity_type=' + entity_type,
+    $.getJSON('https://api.open.fec.gov/v1/schedules/schedule_a/?two_year_transaction_period=2016&api_key=' +
+        API_KEY + '&contributor_name=' + val + '&is_individual=' + is_individual,
       function(res) {
         matches = res.results.filter(function(result) {
             return result.contributor_name === val;
@@ -281,7 +281,7 @@ $("#last-name").on("input", function(e) {
                   'occupation': $('#occupation').val(),
                   'employer': $('#employer').val(),
                   'type': 'receipt',
-                  'entityType': entity_type}
+                  'isIndividual': is_individual}
     if(reportData) {
         reportData.push(entry)
     } else {
